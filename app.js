@@ -7,13 +7,17 @@ const model = require("./backend/src/models/middlewareModels")
 
 //This is entirely to suppress yahoo-finance2 logging
 const YahooFinance = require("yahoo-finance2").default;
-const silentLogger = {
-  info: () => {},
-  warn: () => {},
-  error: () => {},
-  debug: () => {},
-};
-YahooFinance.setGlobalConfig({ logger: silentLogger });
+try {
+  const silentLogger = {
+    info: () => {},
+    warn: () => {},
+    error: () => {},
+    debug: () => {},
+  };
+  YahooFinance.setGlobalConfig({ logger: silentLogger });
+} catch (err) {
+  // setGlobalConfig may not exist in all versions, ignore
+}
 
 //Middleware to parse JSON bodies
 app.use(express.json());
